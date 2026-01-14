@@ -1,6 +1,7 @@
 import requests
 import os
 from dotenv import load_dotenv
+import streamlit as st
 
 load_dotenv()
 
@@ -19,7 +20,14 @@ class NutritionClient:
     """Client for USDA FoodData Central API (free, no restrictions)"""
 
     def __init__(self):
-        self.api_key = os.getenv("USDA_API_KEY")
+        # Try Streamlit secrets first (for Streamlit Cloud), then fall back to env var (local dev)
+        try:
+            self.api_key = st.secrets.get("USDA_API_KEY")
+        except Exception:
+            self.api_key = None
+        
+        if not self.api_key:
+            self.api_key = os.getenv("USDA_API_KEY")
         self.base_url = "https://api.nal.usda.gov/fdc/v1"
 
     def get_nutrition(self, query):

@@ -30,6 +30,11 @@ class NutritionClient:
         
         if not self.api_key:
             self.api_key = os.getenv("USDA_API_KEY")
+        
+        # Clean up API key (remove any whitespace/quotes that might have been copied)
+        if self.api_key:
+            self.api_key = self.api_key.strip().strip('"').strip("'")
+        
         self.base_url = "https://api.nal.usda.gov/fdc/v1"
 
     def get_nutrition(self, query):

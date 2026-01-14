@@ -119,8 +119,13 @@ if 'recipe_result' not in st.session_state:
 if 'current_date' not in st.session_state:
     st.session_state.current_date = datetime.now().strftime('%Y-%m-%d')
 
-# Initialize API client
-api_client = NutritionixClient()
+# Initialize API client with caching to ensure stable initialization
+@st.cache_resource
+def get_api_client():
+    """Create a cached API client instance"""
+    return NutritionixClient()
+
+api_client = get_api_client()
 
 
 def calculate_totals():

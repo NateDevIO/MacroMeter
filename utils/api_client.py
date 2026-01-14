@@ -21,10 +21,12 @@ class NutritionClient:
 
     def __init__(self):
         # Try Streamlit secrets first (for Streamlit Cloud), then fall back to env var (local dev)
+        self.api_key = None
         try:
-            self.api_key = st.secrets.get("USDA_API_KEY")
+            if "USDA_API_KEY" in st.secrets:
+                self.api_key = st.secrets["USDA_API_KEY"]
         except Exception:
-            self.api_key = None
+            pass
         
         if not self.api_key:
             self.api_key = os.getenv("USDA_API_KEY")

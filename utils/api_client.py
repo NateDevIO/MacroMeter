@@ -56,8 +56,7 @@ class NutritionClient:
         params = {
             "api_key": self.api_key,
             "query": query,
-            "pageSize": 5,
-            "dataType": "Survey (FNDDS),Foundation,SR Legacy"
+            "pageSize": 5
         }
 
         # Retry logic for intermittent failures

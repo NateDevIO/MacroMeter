@@ -50,7 +50,7 @@ class NutritionClient:
             "api_key": self.api_key,
             "query": query,
             "pageSize": 5,
-            "dataType": ["Survey (FNDDS)", "Foundation", "SR Legacy"]
+            "dataType": "Survey (FNDDS),Foundation,SR Legacy"
         }
 
         try:

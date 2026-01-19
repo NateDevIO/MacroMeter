@@ -6,3 +6,6 @@ __pycache__/
 data/*.json
 .claude/
 tmpclaude-*
+functions/node_modules/
+.firebase/
+firebase-debug.log*

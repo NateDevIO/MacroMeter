@@ -1,0 +1,18 @@
+{
+    "name": "functions",
+    "description": "Cloud Functions for MacroMeter USDA API Proxy",
+    "scripts": {
+        "serve": "firebase emulators:start --only functions",
+        "deploy": "firebase deploy --only functions",
+        "logs": "firebase functions:log"
+    },
+    "engines": {
+        "node": "20"
+    },
+    "main": "index.js",
+    "dependencies": {
+        "firebase-admin": "^11.11.1",
+        "firebase-functions": "^4.5.0",
+        "cors": "^2.8.5"
+    }
+}

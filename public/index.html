@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MacroMeter - Daily Nutrition Tracker</title>
+    <meta name="description" content="Track your daily nutrition goals with natural language meal entry">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍎</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1>🍎 MacroMeter</h1>
+            <p class="subtitle">Track your nutrition goals with natural language meal entry</p>
+        </header>
+
+        <!-- Progress Dashboard -->
+        <section class="dashboard">
+            <h2>📊 Today's Progress</h2>
+            <div class="progress-grid">
+                <div class="progress-card">
+                    <div class="progress-label">🔥 Calories</div>
+                    <div class="progress-value" id="calories-value">0 / 2000</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="calories-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-remaining" id="calories-remaining">2000 remaining</div>
+                </div>
+                <div class="progress-card">
+                    <div class="progress-label">🥩 Protein</div>
+                    <div class="progress-value" id="protein-value">0g / 150g</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill protein" id="protein-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-remaining" id="protein-remaining">150g remaining</div>
+                </div>
+                <div class="progress-card">
+                    <div class="progress-label">🍞 Carbs</div>
+                    <div class="progress-value" id="carbs-value">0g / 250g</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill carbs" id="carbs-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-remaining" id="carbs-remaining">250g remaining</div>
+                </div>
+                <div class="progress-card">
+                    <div class="progress-label">🥑 Fat</div>
+                    <div class="progress-value" id="fat-value">0g / 65g</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill fat" id="fat-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-remaining" id="fat-remaining">65g remaining</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabs -->
+        <nav class="tabs">
+            <button class="tab active" data-tab="add-meal">🍽️ Add Meal</button>
+            <button class="tab" data-tab="favorites">⭐ Favorites</button>
+            <button class="tab" data-tab="history">📅 History</button>
+            <button class="tab" data-tab="settings">⚙️ Settings</button>
+        </nav>
+
+        <!-- Tab Content: Add Meal -->
+        <section id="add-meal" class="tab-content active">
+            <div class="input-group">
+                <input type="text" id="meal-input" placeholder="e.g., 2 scrambled eggs, a banana, and a cup of coffee">
+                <button id="lookup-btn" class="btn primary">🔍 Look Up</button>
+            </div>
+            
+            <!-- Pending Meal Preview -->
+            <div id="pending-meal" class="pending-meal hidden">
+                <h3>📋 Review nutrition data:</h3>
+                <div class="preview-grid">
+                    <div class="preview-item">
+                        <span class="preview-label">Food</span>
+                        <span class="preview-value" id="pending-name">-</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">Calories</span>
+                        <span class="preview-value" id="pending-calories">-</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">Protein</span>
+                        <span class="preview-value" id="pending-protein">-</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">Carbs</span>
+                        <span class="preview-value" id="pending-carbs">-</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">Fat</span>
+                        <span class="preview-value" id="pending-fat">-</span>
+                    </div>
+                </div>
+                <div class="pending-actions">
+                    <button id="add-meal-btn" class="btn primary">✅ Add Meal</button>
+                    <button id="add-favorite-btn" class="btn secondary">⭐ Add & Save Favorite</button>
+                    <button id="cancel-btn" class="btn ghost">✕ Cancel</button>
+                </div>
+            </div>
+
+            <!-- Today's Meals -->
+            <div id="todays-meals" class="meals-list">
+                <h3>🍽️ Today's Meals</h3>
+                <div id="meals-container">
+                    <p class="empty-state">No meals logged yet. Add your first meal above!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab Content: Favorites -->
+        <section id="favorites" class="tab-content">
+            <h3>⭐ Your Favorite Meals</h3>
+            <div id="favorites-container">
+                <p class="empty-state">No favorites yet. Add meals to your favorites for quick access!</p>
+            </div>
+        </section>
+
+        <!-- Tab Content: History -->
+        <section id="history" class="tab-content">
+            <h3>📅 Recent History</h3>
+            <div id="history-container">
+                <p class="empty-state">No history yet. Your daily totals will appear here.</p>
+            </div>
+            <button id="clear-history-btn" class="btn ghost hidden">🗑️ Clear History</button>
+        </section>
+
+        <!-- Tab Content: Settings -->
+        <section id="settings" class="tab-content">
+            <h3>⚙️ Daily Goals</h3>
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <label for="goal-calories">🔥 Calories</label>
+                    <input type="number" id="goal-calories" value="2000" min="1000" max="5000" step="50">
+                </div>
+                <div class="setting-item">
+                    <label for="goal-protein">🥩 Protein (g)</label>
+                    <input type="number" id="goal-protein" value="150" min="0" max="500" step="5">
+                </div>
+                <div class="setting-item">
+                    <label for="goal-carbs">🍞 Carbs (g)</label>
+                    <input type="number" id="goal-carbs" value="250" min="0" max="500" step="5">
+                </div>
+                <div class="setting-item">
+                    <label for="goal-fat">🥑 Fat (g)</label>
+                    <input type="number" id="goal-fat" value="65" min="0" max="300" step="5">
+                </div>
+            </div>
+            <button id="save-goals-btn" class="btn primary">💾 Save Goals</button>
+            
+            <div class="settings-divider"></div>
+            
+            <h3>🚀 Quick Actions</h3>
+            <div class="quick-actions">
+                <button id="clear-meals-btn" class="btn ghost">🗑️ Clear Today's Meals</button>
+                <button id="export-btn" class="btn secondary">📥 Export History (CSV)</button>
+            </div>
+        </section>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast hidden"></div>
+    </div>
+
+    <footer class="app-footer">
+        <p>Coded by Nate • Powered by USDA FoodData Central</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

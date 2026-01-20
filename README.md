@@ -1,102 +1,109 @@
 # MacroMeter 🍎
 
-A Streamlit web application for tracking daily nutrition intake with natural language meal entry.
+A nutrition tracking web application with natural language meal entry, powered by Firebase.
+
+**Live App:** https://macrosfood.web.app
 
 **Coded by Nate**
 
 ## Features
 
-### Core Features
-- **Goal Setting** - Set personalized daily targets for calories, protein, carbs, and fat
-- **Natural Language Input** - Add meals by describing them in plain English (e.g., "2 eggs and toast")
-- **Real-time Progress Dashboard** - Visual progress bars and metrics showing daily intake vs goals
-- **Macro Distribution Chart** - Interactive pie chart showing calorie breakdown by macro
-
-### Additional Features
-- **Meal History** - View and export your nutrition tracking history (last 7 days)
-- **Quick Add Favorites** - Save frequently eaten meals for one-click adding
-- **Recipe Mode** - Paste recipe ingredients and calculate per-serving nutrition
-- **CSV Export** - Download your nutrition data for external analysis
+- **Natural Language Input** - Add meals by describing them (e.g., "2 eggs and a banana")
+- **Smart Quantity Parsing** - Understands "2 scrambled eggs, a banana, and coffee"
+- **Real-time Progress Dashboard** - Visual progress bars for calories, protein, carbs, fat
+- **Customizable Goals** - Set personalized daily nutrition targets
+- **Favorites System** - Save frequently eaten meals for one-click adding
+- **Meal History** - Track your nutrition over time with exportable CSV data
+- **Offline-Ready** - Data persists in localStorage
 
 ## Tech Stack
 
 | Technology | Purpose |
 |------------|---------|
-| **Python 3.9+** | Core programming language |
-| **Streamlit** | Web application framework |
-| **USDA FoodData Central API** | Nutrition data source (free, comprehensive) |
-| **Plotly** | Interactive data visualizations |
-| **Pandas** | Data manipulation and export |
-| **python-dotenv** | Environment variable management |
+| **HTML/CSS/JavaScript** | Frontend web application |
+| **Firebase Hosting** | Static site hosting (never sleeps!) |
+| **Firebase Functions** | Backend API proxy |
+| **USDA FoodData Central API** | Nutrition data source |
 
-## Installation
+## Architecture
+
+```
+┌─────────────────┐     ┌─────────────────┐     ┌──────────────────┐
+│  Firebase       │────▶│  Firebase       │────▶│  USDA FoodData   │
+│  Hosting        │     │  Functions      │     │  Central API     │
+│  (Frontend)     │◀────│  (Backend)      │◀────│                  │
+└─────────────────┘     └─────────────────┘     └──────────────────┘
+```
+
+## Local Development
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/MacroMeter.git
+   git clone https://github.com/NateDevIO/MacroMeter.git
    cd MacroMeter
    ```
 
-2. **Install dependencies**
+2. **Install Firebase CLI** (if not already installed)
    ```bash
-   pip install -r requirements.txt
+   npm install -g firebase-tools
+   firebase login
    ```
 
-3. **Get a free USDA API key**
-   - Sign up at: https://fdc.nal.usda.gov/api-key-signup.html
-   - You'll receive the key instantly via email
+3. **Install function dependencies**
+   ```bash
+   cd functions
+   npm install
+   cd ..
+   ```
 
-4. **Configure environment**
-   - Copy `.env.example` to `.env`
-   - Add your USDA API key:
+4. **Set up environment**
+   - Create `functions/.env` with your USDA API key:
      ```
      USDA_API_KEY=your_api_key_here
      ```
+   - Get a free key at: https://fdc.nal.usda.gov/api-key-signup.html
 
-5. **Run the app**
+5. **Run locally**
    ```bash
-   streamlit run app.py
+   firebase serve
    ```
 
-6. **Open in browser**
-   - Navigate to `http://localhost:8501`
+6. **Deploy**
+   ```bash
+   firebase deploy
+   ```
 
 ## Project Structure
 
 ```
 MacroMeter/
-├── app.py                 # Main Streamlit application
-├── .env                   # API key configuration (not in repo)
-├── .gitignore             # Git ignore rules
-├── requirements.txt       # Python dependencies
-├── README.md              # This file
-├── data/                  # Local data storage
-│   ├── history.json       # Meal history
-│   └── favorites.json     # Saved favorites
-└── utils/
-    ├── __init__.py
-    ├── api_client.py      # USDA API integration
-    ├── data_store.py      # Data persistence
-    ├── nutrition.py       # Calculation utilities
-    └── visualization.py   # Plotly chart generators
+├── public/                 # Frontend (Firebase Hosting)
+│   ├── index.html          # Main app page
+│   ├── styles.css          # Styling
+│   └── app.js              # Application logic
+├── functions/              # Backend (Firebase Functions)
+│   ├── index.js            # API proxy with smart parsing
+│   ├── package.json        # Node.js dependencies
+│   └── .env                # API key (not in repo)
+├── firebase.json           # Firebase configuration
+├── .firebaserc             # Firebase project settings
+└── README.md               # This file
 ```
 
-## Usage
+## How It Works
 
-1. **Set your goals** in the sidebar (calories, protein, carbs, fat)
-2. **Add meals** by typing descriptions like "chicken breast with rice"
-3. **Review nutrition data** before adding to your log
-4. **Track progress** with the dashboard at the top
-5. **Save favorites** for meals you eat often
-6. **View history** to see your trends over time
+1. Enter a meal like "2 scrambled eggs and a banana"
+2. The backend parses this into individual items with quantities
+3. Each item is searched in the USDA database
+4. Results are multiplied by quantity and summed
+5. Total nutrition is displayed for confirmation
 
 ## API Information
 
 This app uses the **USDA FoodData Central API** which provides:
-- Comprehensive nutrition database
+- Comprehensive nutrition database (500k+ foods)
 - Free unlimited access
 - No credit card required
-- Data from USDA food surveys and research
 
 ## License
 
@@ -104,4 +111,4 @@ MIT License - Feel free to use and modify for your own projects.
 
 ---
 
-*Built with Streamlit and the USDA FoodData Central API*
+*Built with Firebase and the USDA FoodData Central API*
